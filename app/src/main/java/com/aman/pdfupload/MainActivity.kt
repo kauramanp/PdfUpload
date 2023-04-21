@@ -1,8 +1,11 @@
 package com.aman.pdfupload
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -28,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                 // Permission is granted. Continue the action or workflow in your
                 // app.
                 Log.e(TAG, "permission granted")
-                getImage.launch("*/*")
+                getImage.launch("application/pdf")
             } else {
                 // Explain to the user that the feature is unavailable because the
                 // features requires a permission that the user has denied. At the
@@ -59,21 +62,20 @@ class MainActivity : AppCompatActivity() {
             storageRef.getReference(Calendar.getInstance().timeInMillis.toString()).putFile(it)
                 .addOnSuccessListener {
                     System.out.println("Success $it")
-
                 }.addOnFailureListener{
-                System.out.println("Error $it")
+                    System.out.println("Error $it")
                 }
         }
         }
 
     private fun requestPermission() {
         Log.e(TAG," request permission")
-      /*  val intent = Intent(
+        val intent = Intent(
             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
         )
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)*/
+        startActivity(intent)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -92,8 +94,7 @@ class MainActivity : AppCompatActivity() {
                     ) == PackageManager.PERMISSION_GRANTED -> {
                         // You can use the API that requires the permission.
                         Log.e(TAG, "permission granted when")
-                        getImage.launch("*/*")
-
+                        getImage.launch("application/pdf")
                     }
                     shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)->{
                         requestPermission()
